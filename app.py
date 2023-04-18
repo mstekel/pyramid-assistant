@@ -17,7 +17,7 @@ def webhook():
     elif intent == 'goodbye':
         response = 'Goodbye, have a nice day!'
     else:
-        response = 'I am Pyramid. Your intent was ' + intent + ' and the parameters were ' + params
+        response = 'I am Pyramid. Your intent was ' + intent
 
     # Create response payload and return it
     payload = {
