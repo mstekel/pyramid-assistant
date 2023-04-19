@@ -17,7 +17,7 @@ def webhook():
 
     # Handle the intent and generate a response
     if intent == 'Default Welcome Intent':
-        response_text = 'Welcome to Moshe\'s' Google Action!'
+        response_text = 'Welcome to Moshe\'s Google Action!'
     else:
         response_text = 'I\'m Moshe. I don\'t understand that command.'
 
