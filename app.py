@@ -1,29 +1,35 @@
 from flask import Flask, request, jsonify
+from google.protobuf.json_format import MessageToJson
+from google.cloud import dialogflowcx_v3beta1 as dialogflow
 
 app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    req = request.get_json(silent=True, force=True)
+    # Convert the request to JSON format
+    request_json = request.get_json(silent=True, force=True)
+    request_proto = dialogflow.DetectIntentRequest()
+    MessageToJson(request_proto, request_json)
 
-    # Extract intent and parameters from the request
-    intent = req['queryResult']['intent']['displayName']
-    params = req['queryResult']['parameters']
+    # Parse the JSON request to extract the intent and parameters
+    intent = request_proto.query_params.parameters.display_name
+    parameters = request_proto.query_params.parameters.fields
 
-    # Generate response based on the intent
-    if intent == 'greet':
-        name = params['name'] if 'name' in params else 'there'
-        response = f'Hello, {name}!'
-    elif intent == 'goodbye':
-        response = 'Goodbye, have a nice day!'
+    # Handle the intent and generate a response
+    if intent == 'Default Welcome Intent':
+        response_text = 'Welcome to Moshe\'s' Google Action!'
     else:
-        response = 'I am Pyramid. Your intent was ' + intent
+        response_text = 'I\'m Moshe. I don\'t understand that command.'
 
-    # Create response payload and return it
-    payload = {
-        'fulfillmentText': response
-    }
-    return jsonify(payload)
+    # Create a response object and set the text response
+    response = dialogflow.DetectIntentResponse()
+    response.query_result.fulfillment_text = response_text
+
+    # Convert the response object to JSON format
+    response_json = MessageToJson(response)
+
+    # Return the response as JSON
+    return jsonify(response_json)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

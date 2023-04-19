@@ -7,3 +7,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.2
 Werkzeug==2.2.3
 zipp==3.15.0
+google-cloud-dialogflow-cx==1.20.1
+google-api-core==2.11.0
+grpcio==1.54.0
+
