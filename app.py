@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from google.protobuf.json_format import MessageToJson
-from google.cloud import dialogflow_v2 as dialogflow
+from google.cloud import dialogflow
 
 app = Flask(__name__)
 
